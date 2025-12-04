@@ -1032,6 +1032,11 @@ ENABLE_OPENAI_API = PersistentConfig(
     os.environ.get("ENABLE_OPENAI_API", "True").lower() == "true",
 )
 
+# AI Provider selection (openai or gpuai)
+AI_PROVIDER = os.environ.get("AI_PROVIDER", "openai").lower()
+
+# GPU AI configuration
+GPUAI_API_KEY = os.environ.get("GPUAI_API_KEY", "")
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 OPENAI_API_BASE_URL = os.environ.get("OPENAI_API_BASE_URL", "")
@@ -1039,12 +1044,21 @@ OPENAI_API_BASE_URL = os.environ.get("OPENAI_API_BASE_URL", "")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_API_BASE_URL = os.environ.get("GEMINI_API_BASE_URL", "")
 
-
-if OPENAI_API_BASE_URL == "":
-    OPENAI_API_BASE_URL = "https://api.openai.com/v1"
+# Apply provider-specific configuration
+if AI_PROVIDER == "gpuai":
+    # GPU AI provider configuration
+    if OPENAI_API_BASE_URL == "":
+        OPENAI_API_BASE_URL = "https://api.gpuai.app/v1"
+    if OPENAI_API_KEY == "":
+        OPENAI_API_KEY = GPUAI_API_KEY
 else:
-    if OPENAI_API_BASE_URL.endswith("/"):
-        OPENAI_API_BASE_URL = OPENAI_API_BASE_URL[:-1]
+    # Default OpenAI provider configuration
+    if OPENAI_API_BASE_URL == "":
+        OPENAI_API_BASE_URL = "https://api.openai.com/v1"
+
+# Remove trailing slash if present
+if OPENAI_API_BASE_URL.endswith("/"):
+    OPENAI_API_BASE_URL = OPENAI_API_BASE_URL[:-1]
 
 OPENAI_API_KEYS = os.environ.get("OPENAI_API_KEYS", "")
 OPENAI_API_KEYS = OPENAI_API_KEYS if OPENAI_API_KEYS != "" else OPENAI_API_KEY

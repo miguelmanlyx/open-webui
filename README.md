@@ -144,6 +144,26 @@ This will start the Open WebUI server, which you can access at [http://localhost
   docker run -d -p 3000:8080 -e OPENAI_API_KEY=your_secret_key -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
   ```
 
+### Installation for GPU AI Usage
+
+Open WebUI supports GPU AI as an optional OpenAI-compatible provider. GPU AI provides access to powerful GPU-accelerated language models.
+
+- **To use GPU AI**, set the AI provider and your GPU AI API key:
+
+  ```bash
+  docker run -d -p 3000:8080 -e AI_PROVIDER=gpuai -e GPUAI_API_KEY=your_gpuai_key -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+  ```
+
+- **For Python pip installation**, set the environment variables before running:
+
+  ```bash
+  export AI_PROVIDER=gpuai
+  export GPUAI_API_KEY=your_gpuai_key
+  open-webui serve
+  ```
+
+**Note**: The `AI_PROVIDER` environment variable defaults to `openai` to maintain backward compatibility. GPU AI is opt-in only and requires no changes to existing OpenAI configurations.
+
 ### Installing Open WebUI with Bundled Ollama Support
 
 This installation method uses a single container image that bundles Open WebUI with Ollama, allowing for a streamlined setup via a single command. Choose the appropriate command based on your hardware setup:
