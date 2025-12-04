@@ -1058,18 +1058,24 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_API_BASE_URL = os.environ.get("GEMINI_API_BASE_URL", "")
 
 # Apply provider-specific configuration
-# Note: When using GPU AI, OPENAI_API_KEY is used as a generic API key variable
-# to maintain compatibility with existing OpenAI-compatible API handling code.
-# Precedence: If OPENAI_API_KEY is explicitly set, it takes precedence over GPUAI_API_KEY.
+# Note: OPENAI_API_KEY serves as the unified API key variable for all OpenAI-compatible
+# providers (OpenAI, GPU AI, etc.) to maintain compatibility with existing API handling code.
+# This design allows the rest of the codebase to use a single variable regardless of provider.
+# 
+# API Key Precedence: When using GPU AI, if OPENAI_API_KEY is explicitly set, it takes 
+# precedence over GPUAI_API_KEY. This allows users to override the provider-specific key
+# if needed (e.g., for testing or custom configurations).
 if AI_PROVIDER == AI_PROVIDER_GPUAI:
     # GPU AI provider configuration
     if OPENAI_API_BASE_URL == "":
         OPENAI_API_BASE_URL = "https://api.gpuai.app/v1"
     if OPENAI_API_KEY == "":
+        # Use GPU AI key when OpenAI key is not set
         OPENAI_API_KEY = GPUAI_API_KEY
     elif GPUAI_API_KEY and OPENAI_API_KEY != GPUAI_API_KEY:
+        # Both keys are set and different - log which one is being used
         log.info(
-            f"ℹ️  Using OPENAI_API_KEY for GPU AI provider (GPUAI_API_KEY is ignored when OPENAI_API_KEY is set)"
+            f"ℹ️  Using OPENAI_API_KEY for GPU AI provider (OPENAI_API_KEY takes precedence over GPUAI_API_KEY)"
         )
 else:
     # Default OpenAI provider configuration
