@@ -1039,6 +1039,15 @@ AI_PROVIDER_GPUAI = "gpuai"
 # AI Provider selection (openai or gpuai)
 AI_PROVIDER = os.environ.get("AI_PROVIDER", AI_PROVIDER_OPENAI).lower()
 
+# Validate AI_PROVIDER
+if AI_PROVIDER not in [AI_PROVIDER_OPENAI, AI_PROVIDER_GPUAI]:
+    log.warning(
+        f"⚠️  Invalid AI_PROVIDER value '{AI_PROVIDER}'. "
+        f"Supported values are '{AI_PROVIDER_OPENAI}' or '{AI_PROVIDER_GPUAI}'. "
+        f"Defaulting to '{AI_PROVIDER_OPENAI}'."
+    )
+    AI_PROVIDER = AI_PROVIDER_OPENAI
+
 # GPU AI configuration
 GPUAI_API_KEY = os.environ.get("GPUAI_API_KEY", "")
 
@@ -1050,13 +1059,18 @@ GEMINI_API_BASE_URL = os.environ.get("GEMINI_API_BASE_URL", "")
 
 # Apply provider-specific configuration
 # Note: When using GPU AI, OPENAI_API_KEY is used as a generic API key variable
-# to maintain compatibility with existing OpenAI-compatible API handling code
+# to maintain compatibility with existing OpenAI-compatible API handling code.
+# Precedence: If OPENAI_API_KEY is explicitly set, it takes precedence over GPUAI_API_KEY.
 if AI_PROVIDER == AI_PROVIDER_GPUAI:
     # GPU AI provider configuration
     if OPENAI_API_BASE_URL == "":
         OPENAI_API_BASE_URL = "https://api.gpuai.app/v1"
     if OPENAI_API_KEY == "":
         OPENAI_API_KEY = GPUAI_API_KEY
+    elif GPUAI_API_KEY and OPENAI_API_KEY != GPUAI_API_KEY:
+        log.info(
+            f"ℹ️  Using OPENAI_API_KEY for GPU AI provider (GPUAI_API_KEY is ignored when OPENAI_API_KEY is set)"
+        )
 else:
     # Default OpenAI provider configuration
     if OPENAI_API_BASE_URL == "":
