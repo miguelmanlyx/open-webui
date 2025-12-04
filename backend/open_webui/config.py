@@ -1032,8 +1032,12 @@ ENABLE_OPENAI_API = PersistentConfig(
     os.environ.get("ENABLE_OPENAI_API", "True").lower() == "true",
 )
 
+# AI Provider constants
+AI_PROVIDER_OPENAI = "openai"
+AI_PROVIDER_GPUAI = "gpuai"
+
 # AI Provider selection (openai or gpuai)
-AI_PROVIDER = os.environ.get("AI_PROVIDER", "openai").lower()
+AI_PROVIDER = os.environ.get("AI_PROVIDER", AI_PROVIDER_OPENAI).lower()
 
 # GPU AI configuration
 GPUAI_API_KEY = os.environ.get("GPUAI_API_KEY", "")
@@ -1045,7 +1049,9 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_API_BASE_URL = os.environ.get("GEMINI_API_BASE_URL", "")
 
 # Apply provider-specific configuration
-if AI_PROVIDER == "gpuai":
+# Note: When using GPU AI, OPENAI_API_KEY is used as a generic API key variable
+# to maintain compatibility with existing OpenAI-compatible API handling code
+if AI_PROVIDER == AI_PROVIDER_GPUAI:
     # GPU AI provider configuration
     if OPENAI_API_BASE_URL == "":
         OPENAI_API_BASE_URL = "https://api.gpuai.app/v1"
