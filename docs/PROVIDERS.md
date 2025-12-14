@@ -40,7 +40,7 @@ Via UI:
 1. Go to Settings → Connections
 2. Enable OpenAI API
 3. Click "Add Connection"
-4. Set URL to: `https://aibadgr.com/api/v1`
+4. Set **Base URL** to: `https://aibadgr.com/api/v1`
 5. Enter your AI Badgr API key
 6. Save
 
@@ -64,7 +64,7 @@ Local AI model hosting solution.
 
 **Configuration:**
 - **Base URL**: `http://localhost:1234/v1` (default)
-- **Authentication**: Usually not required for local instances
+- **Authentication**: Not required (local instance)
 
 ### GroqCloud
 
