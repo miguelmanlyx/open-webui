@@ -19,11 +19,6 @@ AI Badgr is a budget-focused AI provider offering tier-based model access.
 **Configuration:**
 - **Base URL**: `https://aibadgr.com/api/v1`
 - **Authentication**: Bearer token (API Key)
-- **Environment Variables** (optional):
-  ```bash
-  AIBADGR_API_KEY=your_api_key_here
-  AIBADGR_BASE_URL=https://aibadgr.com/api/v1
-  ```
 
 **Model Names:**
 
@@ -57,7 +52,7 @@ export OPENAI_API_KEY=your_aibadgr_api_key
 
 **Verification:**
 
-To test your connection, use the "Verify Connection" button in the Add Connection dialog. A successful connection will show a success message.
+To test your connection, use the "Verify Connection" button in the connection form. A successful connection will show a success message.
 
 **Example Usage:**
 
